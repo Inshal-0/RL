@@ -1,0 +1,268 @@
+Lab 1 – Functions & What They Do (Very Short)
+
+step_env(env,action)
+Wrapper: handles both old Gym (4-return) and Gymnasium (5-return) env.step() formats.
+
+make_frozenlake(det=True,size=4)
+Create FrozenLake-v1 env → deterministic (det=True) or stochastic (det=False).
+
+explore_env(env)
+Reset env and print initial state, action space, observation space.
+
+run_random_episode(env,render=False,max_steps=100)
+Run one episode with random actions; print each step; return total reward.
+
+run_random_episodes(env,num_episodes=100,max_steps=100)
+Run many random episodes; print total reward per episode; return list of rewards.
+
+visualize_path(path,size=4)
+Show a 4×4 grid with step numbers marking the visited states.
+
+random_path_episode(env,size=4,max_steps=100)
+Run random episode, record visited states → call visualize_path to draw path.
+
+compare_det_vs_stoch(num_episodes=20,max_steps=100)
+Run random episodes on deterministic vs stochastic FrozenLake; return both reward lists.
+
+plot_random_policy_rewards(env,num_episodes=10,max_steps=100)
+Run random policy, collect episode rewards, plot reward vs episode.
+
+run_manual_policy(env,actions,num_episodes=5,max_steps=None)
+Execute a fixed action sequence (manual policy) for several episodes; print transitions & reward.
+
+explore_other_env(env_name='Taxi-v3',num_episodes=5,max_steps=200)
+Try other envs (Taxi, Cliff, etc.) with random actions; print reward per episode.
+
+
+
+
+
+
+Lab 2 – Functions & Purpose (Very Short Cheatsheet)
+
+init_gridworld(rows,cols,wall,goal,danger)
+→ Create GridWorld MDP description (states, actions, wall, goal, danger).
+
+reward(state,goal,danger)
+→ Reward function: +1 goal, -1 danger, -0.04 otherwise.
+
+next_state(state,action,rows,cols,wall)
+→ Deterministic next state (handles borders + wall).
+
+transition_probabilities(state,action,mdp,p_intended,p_left,p_right)
+→ Stochastic transition model (80–10–10 by default, or custom).
+
+print_transitions(state,action,mdp,...)
+→ Print P(s′|s,a) and reward for all next states (nice for exam explanation).
+
+set_gamma(gamma)
+→ Tiny helper to “set/use” γ (mainly conceptual placeholder).
+
+value_iteration(mdp,gamma,theta,...)
+→ Run value iteration → returns optimal V(s) and greedy policy(s) for GridWorld.
+
+print_value_grid(V,mdp)
+→ Pretty-print V(s) as a grid (with wall shown).
+
+print_policy_grid(policy,mdp)
+→ Pretty-print optimal policy as arrows/labels (GOAL, DANG, WALL).
+
+
+
+
+
+Lab 2 – Functions & Purpose (Very Short Cheatsheet)
+
+init_gridworld(rows,cols,wall,goal,danger)
+→ Create GridWorld MDP description (states, actions, wall, goal, danger).
+
+reward(state,goal,danger)
+→ Reward function: +1 goal, -1 danger, -0.04 otherwise.
+
+next_state(state,action,rows,cols,wall)
+→ Deterministic next state (handles borders + wall).
+
+transition_probabilities(state,action,mdp,p_intended,p_left,p_right)
+→ Stochastic transition model (80–10–10 by default, or custom).
+
+print_transitions(state,action,mdp,...)
+→ Print P(s′|s,a) and reward for all next states (nice for exam explanation).
+
+set_gamma(gamma)
+→ Tiny helper to “set/use” γ (mainly conceptual placeholder).
+
+value_iteration(mdp,gamma,theta,...)
+→ Run value iteration → returns optimal V(s) and greedy policy(s) for GridWorld.
+
+print_value_grid(V,mdp)
+→ Pretty-print V(s) as a grid (with wall shown).
+
+print_policy_grid(policy,mdp)
+→ Pretty-print optimal policy as arrows/labels (GOAL, DANG, WALL).
+
+
+
+
+
+Lab 3 – Functions & Purpose (Super Short Cheatsheet)
+
+init_mrp(gamma=0.5)
+→ Define MRP: states S, rewards R, transition matrix P, discount gamma.
+
+sample_episode(P,S,start_state_idx=0,terminal_state='sleep',log=True)
+→ Generate one episode (sequence of state indices) from start until 'sleep'.
+
+compute_return(episode,R,gamma)
+→ Compute discounted return 
+𝐺
+𝑡
+G
+t
+	​
+
+ for an episode.
+
+debug_return(episode,R,gamma)
+→ Same as above but prints each step’s reward, γᵏ, and partial G_t (for explanation).
+
+mc_value_estimation(S,R,P,gamma,num_episodes,log_interval)
+→ Monte Carlo estimate of V(s) for all states by averaging returns over many episodes.
+
+bellman_value(P,R,gamma)
+→ Exact V using Bellman equation: 
+𝑉
+=
+(
+𝐼
+−
+𝛾
+𝑃
+)
+−
+1
+𝑅
+V=(I−γP)
+−1
+R.
+
+change_gamma(old_gamma,new_gamma)
+→ Helper to “change” γ and log it (for experiments).
+
+change_reward_tv(R,new_reward_tv,state_names)
+→ Modify reward of 'tv' state in R (what-if reward analysis).
+
+add_state_exercise(S,R,P,gamma,new_transitions_from_exercise,new_rewards_exercise)
+→ Add new state 'exercise' to MRP, extend S, R, P.
+
+
+
+
+
+Lab 4 – Functions & Purpose (Ultra Short)
+
+make_frozenlake_env(is_slippery=True,render_mode='ansi')
+→ Create FrozenLake-v1 env (4×4 or 8×8), choose slippery/deterministic, text render.
+
+value_iteration_frozenlake(env,gamma=0.99,theta=1e-8)
+→ Run value iteration on FrozenLake → returns optimal V(s).
+
+derive_greedy_policy(env,V,gamma=0.99)
+→ From a value function V, compute greedy deterministic policy π*(s).
+
+init_random_policy(env)
+→ Build uniform random policy (each action 1/nA in every state).
+
+policy_evaluation(env,policy,discount_factor=1.0,theta=1e-9,draw=False)
+→ Policy evaluation (Bellman expectation) → compute V^π for given policy.
+
+plot_frozenlake(env,V,policy,col_ramp=1,dpi=175,draw_vals=False)
+→ Draw FrozenLake grid with tiles (S,F,H,G), state values, and policy arrows.
+
+
+
+
+
+Lab 5 – Functions & Purpose (Super Short)
+
+make_frozenlake_env(is_slippery=True,render_mode='ansi')
+→ Create FrozenLake-v1 env (slippery/non-slippery).
+
+q_from_v(env,V,s,gamma=1.0)
+→ Compute Q(s,a) for all actions at a single state s, given V.
+
+policy_improvement(env,V,discount_factor=1.0)
+→ Greedy policy improvement: from V → deterministic one-hot policy π′(s).
+
+plot_frozenlake(V,policy,env,draw_vals=True)
+→ Show either value grid (numbers) or policy arrows on FrozenLake.
+
+policy_evaluation(env,policy,discount_factor=1.0,theta=1e-9)
+→ Evaluate a given policy π → compute V^π via Bellman expectation.
+
+policy_iteration(env,discount_factor=1.0,theta=1e-9,max_iterations=1000,verbose=False)
+→ Full policy iteration loop (evaluation + improvement) until policy is stable; returns optimal policy and V.
+
+
+
+
+
+
+Lab 6 (Taxi-v3) – Functions & Purpose (Ultra Short)
+
+make_taxi_env(render_mode='ansi')
+→ Create Taxi-v3 environment.
+
+describe_taxi_env(env)
+→ Print states, actions, reward structure of Taxi-v3.
+
+value_iteration_taxi(env,discount_factor,theta,max_iterations,return_deltas,verbose)
+→ Run value iteration → returns optimal V, optimal policy, iterations (and deltas per iter if needed).
+
+extract_policy_from_v_taxi(env,V,discount_factor)
+→ From a value function V, compute greedy deterministic policy (one-hot per state).
+
+plot_taxi_values(V,title)
+→ Line plot of V(s) for all 500 states.
+
+plot_taxi_policy(policy,title)
+→ Bar chart of best action per state (0–5).
+
+plot_delta_convergence(deltas,title)
+→ Plot max |ΔV| per iteration (log scale) to show convergence.
+
+evaluate_policy_taxi(env,policy,n_episodes,discount_factor)
+→ Run episodes using policy → compute success rate, avg steps per success, avg discounted return.
+
+experiment_gamma_taxi(gammas,theta,max_iterations,n_eval_episodes)
+→ Run value iteration for multiple γ values, compare iterations, success rate, avg steps, avg return, return results dict.
+
+
+
+
+
+
+Lab 7 (FrozenLake) – Functions & Purpose (Super Short)
+
+make_frozenlake_env(is_slippery=False,render_mode=None)
+→ Create FrozenLake-v1 env (usually deterministic for MC/TD comparison).
+
+make_random_policy(env)
+→ Dict policy: each state → random fixed action (0–3).
+
+make_deterministic_policy(env,mode="right")
+→ Simple fixed policy: always RIGHT / DOWN / etc. for all states.
+
+mc_prediction(env,policy,episodes,gamma)
+→ First-visit Monte Carlo policy evaluation → returns V, V_track, rewards_per_episode.
+
+td_prediction(env,policy,episodes,alpha,gamma)
+→ TD(0) policy evaluation (bootstrapping each step) → returns V, V_track, rewards_per_episode.
+
+plot_convergence(V_track,title)
+→ Plot V(s) vs episodes for all states (shows convergence behavior).
+
+plot_avg_reward(rewards_mc,rewards_td,window)
+→ Moving-average episode reward for MC vs TD (learning performance).
+
+run_mc_td_experiment(episodes,gamma,alpha,policy_mode,is_slippery)
+→ Full lab pipeline: build env, choose policy, run MC + TD(0), print Vs, plot convergence & rewards, return all results.
